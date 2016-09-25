@@ -1,0 +1,36 @@
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-md-8 col-lg-offset-4">
+			<h2>Usuario</h2>
+		</div>
+	</div>
+	<form name="userForm" role="form" novalidate>
+		<div class="row">
+			<div class="col-md-4 well col-lg-offset-4">
+
+					<input-text-edit label="Nombre de Usurio" name="userName" readonly></input-text-edit>
+
+					<input-text-edit label="Email" name="email" readonly></input-text-edit>
+
+					<input-text-edit label="Rol" name="role" readonly></input-text-edit>
+
+					<input-text-edit label="Bloqueo Habilitado" name="lockoutEnabled" readonly></input-text-edit>
+
+					<input-text-edit label="Deshabilitado" name="disabled" readonly></input-text-edit>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 well col-lg-offset-4">
+				<div class="form-group">
+					<div class="col-md-3" style="padding: 1px">
+						<a ui-sref="userList" class="btn btn-primary btn-block">Regresar</a>
+					</div>
+					<div class="col-md-9" style="padding: 1px">
+						<a ui-sref="userEdit({id:model.id})" style="float: right" class="btn btn-default btn-block">Editar</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<!-- /#page-wrapper -->

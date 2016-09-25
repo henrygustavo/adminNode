@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    Hi
-  </body>
+<html ng-app="applicationModule">
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Web PAge</title>
+
+	<!-- Style sheets -->
+
+	<!-- Library js -->
+	<script src="js/jquery-3.1.0.js"></script>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-resource.js"></script>
+	<script src="js/angular-ui-router.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script src="js/angular-animate.min.js"></script>
+
+	<!-- Application Script-->
+	<script src="app/app.config.js"></script>
+
+	 <!-- Home -->
+	<script src="app/components/home/homeController.js"></script>
+
+	<!-- Services-->
+
+	<!-- Directives-->
+
+	<!-- Common -->
+
+</head>
+<body>
+	<div id="all">
+
+		<div >
+				<div ui-view></div>
+		</div>
+	</div>
+</body>
 </html>

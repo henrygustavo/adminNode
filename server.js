@@ -19,6 +19,10 @@ app.set('port', 9090);
 
 app.use(express.static(__dirname + '/public'));
 
+app.get('/admin', function(req, res) {
+    res.sendFile(path.join(__dirname + '/public/views/admin.html'));
+});
+
 app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname + '/public/views/index.html'));
 });
