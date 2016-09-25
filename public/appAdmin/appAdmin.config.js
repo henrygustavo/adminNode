@@ -3,7 +3,7 @@ var localHostUrl = window.location.origin || window.location.protocol + '//' + w
 var applicationModule = angular.module("applicationAdminModule", ['ui.router', 'ngMessages', 'satellizer','permission', 'permission.ui', 'blockUI', 'ui.bootstrap', 'ui.mask', 'fcsa-number', 'ngGrid']);
 
 applicationModule.config(function ($urlRouterProvider, $stateProvider, $locationProvider, $authProvider, GlobalInfo, blockUIConfig) {
-	   
+
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
@@ -34,7 +34,7 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 			controller: 'accessDeniedController',
 			authenticate: true,
 			data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'	}
-		  }	  
+		  }
 	  })
 	 .state('forgotpw', {
 			url: '/forgotpassword',
@@ -68,7 +68,7 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 							}
 					},
 			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}
-		 }        
+		 }
 	 })
 	.state('userDetail', {
 			url: '/user/detail/:id',
@@ -117,19 +117,22 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 	;
 
 	var urlRegisterLogin = GlobalInfo.apiUrl + '/Account/RegisterLoginExternal';
-	
+
 	$authProvider.loginUrl = GlobalInfo.apiUrl + '/oauth/token';
 	$authProvider.tokenName = 'access_token';
-	
+
 	blockUIConfig.message = 'Por favor espere!';
+
+	// use the HTML5 History API
+	$locationProvider.html5Mode(true);
 
 })
 .constant('GlobalInfo',
 {
 	apiUrl: '/api',
-	localHostUrl: localHostUrl+'/admin.html#/',
-	resetUrl: localHostUrl + '/admin.html#/resetpassword',
-	confirmUrl: localHostUrl + '/admin.html#/login?emailconfirmation'
+	localHostUrl: localHostUrl+'/admin/',
+	resetUrl: localHostUrl + '/admin/resetpassword',
+	confirmUrl: localHostUrl + '/admin/login?emailconfirmation'
 })
 .run(function (PermRoleStore, authManager, $rootScope, $state) {
 
@@ -137,23 +140,23 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
     PermRoleStore.defineRole('ADMIN', function (stateParams) {
 		return authManager.isInRole("admin");
 	});
-	
+
     PermRoleStore.defineRole('ANONYMOUS', function (stateParams) {
 		return authManager.isAnonymous();
 	});
-	
+
     PermRoleStore.defineRole('AUTHORIZED', function (stateParams) {
 		return !authManager.isAnonymous();
 	});
 
 	 // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-        
+
         if (toState.authenticate && authManager.isAnonymous()) {
                 $rootScope.returnToState = toState.url;
                 $rootScope.returnToStateParams = toParams.id;
                 $state.go('login', {});
-            } 
+            }
     });
 })
 ;

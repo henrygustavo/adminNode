@@ -12,6 +12,9 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
                 templateUrl: '/app/components/home/homeView.html',
                 controller: 'homeController'
             });
+
+            // use the HTML5 History API
+            $locationProvider.html5Mode(true);
     })
     .constant('GlobalInfo',
     {
