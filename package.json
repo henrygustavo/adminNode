@@ -1,0 +1,25 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "description": "admin template",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henrygustavo/adminNode.git"
+  },
+  "author": "henrygustavo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/henrygustavo/adminNode/issues"
+  },
+  "homepage": "https://github.com/henrygustavo/adminNode#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bowser": "^1.4.6",
+    "express": "^4.14.0",
+    "nodemailer": "^2.6.4"
+  }
+}
