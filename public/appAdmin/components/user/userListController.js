@@ -1,5 +1,5 @@
 angular.module("applicationAdminModule").controller("userListController", function ($scope, userService,helperService) {
- 
+
     userService.iniData();
     userService.find();
     $scope.data = userService.data;
@@ -8,14 +8,14 @@ angular.module("applicationAdminModule").controller("userListController", functi
 
     $scope.search = function(model) {
 
-        var username = (model != undefined) ? model.searchUserName : '';
+        var name = (model != undefined) ? model.searchUserName : '';
         var email = (model != undefined) ? model.searchEmail : '';
-        var filterObj = (model != undefined) ? [{ "Field": "UserName", "Value": username, "Sign": "%" }, { "Field": "Email", "Value": email, "Sign": "%" }] : '';
-        
+        var filterObj = (model != undefined) ? [{ "Field": "name", "Value": name, "Sign": "%" }, { "Field": "email", "Value": email, "Sign": "%" }] : '';
+
         userService.data.filterOptions.filterText = filterObj;
         $scope.data.pagingOptions.currentPage = 1;
         userService.find();
-        
+
     };
     $scope.$watch('data.sortOptions.fields', function (newVal, oldVal) {
 
@@ -24,7 +24,7 @@ angular.module("applicationAdminModule").controller("userListController", functi
             userService.find();
         }
     }, true);
-    
+
     $scope.$watch('data.sortOptions.directions', function (newVal, oldVal) {
 
         if (newVal.length > 0 && newVal !== oldVal) {
@@ -60,7 +60,7 @@ angular.module("applicationAdminModule").controller("userListController", functi
         rowHeight: 50,
         columnDefs: [
                     { field: '', displayName: '', width: '70', sortable: false, cellTemplate: '<div class="ngCellText">{{row.rowIndex + 1}}</div>' },
-                    { field: 'userName', displayName: 'Nombre de Usurio', width: '200' },
+                    { field: 'name', displayName: 'Nombre de Usurio', width: '200' },
                     { field: 'roleName', displayName: 'Rol', width: '100' },
                     { field: 'email', displayName: 'Email', width: '250' },
                     { field: 'disabled', displayName: 'Deshabilitado', width: '100' },

@@ -4,19 +4,11 @@
 			<h2>Rol</h2>
 		</div>
 	</div>
-	<form name="roleForm" role="form" novalidate>
+	<form name="form" role="form" novalidate>
 		<div class="row">
 			<div class="col-md-4 well col-lg-offset-4">
-				<div class="form-group">
 
-					<label>Nombre</label>
-					<div ng-class="{'has-error': roleForm.name.$dirty && roleForm.name.$invalid}">
-						<input name="name" class="form-control" ng-model="model.name" required ng-model-options="{ updateOn: 'blur' }" ng-minlength="4">
-					</div>
-					<div class="text-danger" ng-messages="roleForm.name.$error" ng-if="roleForm.name.$dirty">
-						<div ng-messages-include="appAdmin/shared/html/validation-messages.html"></div>
-					</div>
-				</div>
+				<input-text-edit label="Nombre" name="name" minlength="4" required></input-text-edit>
 			</div>
 		</div>
 		<div class="row">
@@ -26,7 +18,7 @@
 						<a ui-sref="roleList" class="btn btn-primary btn-block">Regresar</a>
 					</div>
 					<div class="col-md-9" style="padding: 1px">
-						<button class="btn btn-default btn-block" ng-disabled="roleForm.$invalid" ng-click="save(model)">Guardar</button>
+						<button class="btn btn-default btn-block" ng-disabled="form.$invalid" ng-click="save(model)">Guardar</button>
 					</div>
 				</div>
 			</div>

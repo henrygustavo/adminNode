@@ -1,28 +1,30 @@
-angular.module("applicationAdminModule").factory('helperService', function ($rootScope, $timeout, $sce) {
-    toastr.options = {        
+angular.module("applicationAdminModule").factory('helperService', function($rootScope, $timeout, $sce) {
+    toastr.options = {
         "positionClass": "toast-top-center",
     };
-    
-	 var activateViewFn = function (view) {
 
-        $rootScope.$broadcast('activateViewEvent', {view: view});
+    var activateViewFn = function(view) {
+
+        $rootScope.$broadcast('activateViewEvent', {
+            view: view
+        });
     };
-    
-    var activateMenuFn = function () {
+
+    var activateMenuFn = function() {
 
         $rootScope.$broadcast('activateMenuEvent', {});
     };
 
     return {
-        handlerError: function (err) {
+        handlerError: function(err) {
             toastr.error(getErrorMessages(err));
         },
-        showAlert: function (message, className) {
+        showAlert: function(message, className) {
 
             switch (className.toLowerCase()) {
                 case "error":
                     toastr.error(message);
-                    break;   
+                    break;
                 case "success":
                     toastr.success(message);
                     break;
@@ -31,22 +33,22 @@ angular.module("applicationAdminModule").factory('helperService', function ($roo
                     break;
                 case "warning":
                     toastr.warning(message);
-                    break;     
+                    break;
             }
         },
-        activateView: function (view) {
+        activateView: function(view) {
 
-            $timeout(function () {
+            $timeout(function() {
                 activateViewFn(view);
             }, 300);
         },
-        activateMenu: function () {
+        activateMenu: function() {
 
-            $timeout(function () {
+            $timeout(function() {
                 activateMenuFn();
             }, 300);
         },
-        renderHtml: function (html_code) {
+        renderHtml: function(html_code) {
             return $sce.trustAsHtml(html_code);
         }
     };
@@ -69,23 +71,8 @@ function getErrorMessages(errorResponse) {
         errorMessage += errorResponse.exceptionMessage + "<br/>";
 
     for (var key in errorResponse.modelState) {
-        for (var i = 0; i < errorResponse.modelState[key].length; i++) {
-            errorMessage += errorResponse.modelState[key][i] + "<br/>";
-        }
-    }
-    
-    if (errorResponse.data != undefined && errorResponse.data.modelState != undefined) {
-        
-        for (var keymodel in errorResponse.data.modelState) {
-            for (var j = 0; j < errorResponse.data.modelState[keymodel].length; j++) {
-                errorMessage += errorResponse.data.modelState[keymodel][j] + "<br/>";
-            }
-        }
-    }
 
-    if (errorResponse.data != undefined && errorResponse.data.modelState == undefined) {
-
-        errorMessage += errorResponse.data + "<br/>";
+        errorMessage += errorResponse.modelState[key] + "<br/>";
     }
 
     if (errorMessage == "") {
@@ -96,6 +83,6 @@ function getErrorMessages(errorResponse) {
             errorMessage = "Por favor intente más tarde... un error ha ocurrido";
         }
     }
-    
+
     return errorMessage;
 }

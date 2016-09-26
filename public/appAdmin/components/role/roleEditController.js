@@ -1,40 +1,62 @@
-angular.module("applicationAdminModule").controller("roleEditController", function (id, $scope, $state, helperService, roleRepository) {
+angular.module("applicationAdminModule").controller("roleEditController", function(id, $scope, $state, helperService, roleRepository) {
 
     $scope.model = {};
-    $scope.model.id = id;
+    $scope.model._id = id;
 
-	helperService.activateView('role');
+    helperService.activateView('role');
 
-    $scope.save = function (model) {
+    $scope.save = function(model) {
 
-        roleRepository.save(model).then(
-            function (response) {
+        if (model._id != 0) {
+            update(model);
+        } else {
+            insert(model);
+        }
+    };
+
+    var insert = function(model) {
+
+        roleRepository.insert(model).then(
+            function(response) {
                 helperService.showAlert(response, "success");
                 $state.go('roleList');
             },
-            function (response) {
+            function(response) {
                 helperService.handlerError(response);
             }
         );
     };
 
-    var getModel = function (idModel) {
+    var update = function(model) {
+
+        roleRepository.update(model).then(
+            function(response) {
+                helperService.showAlert(response, "success");
+                $state.go('roleList');
+            },
+            function(response) {
+                helperService.handlerError(response);
+            }
+        );
+    };
+
+    var getModel = function(idModel) {
 
         roleRepository.getModel(idModel).then(
-            function (response) {
+            function(response) {
                 $scope.model.name = response.name;
             },
-            function (response) {
+            function(response) {
                 helperService.handlerError(response);
             }
         );
     };
 
-    var initialLoad = function () {
+    var initialLoad = function(idModel) {
 
-        if (id != 0)
-         getModel(id);
+        if (idModel != 0)
+            getModel(idModel);
     };
 
-    initialLoad();
+    initialLoad(id);
 });

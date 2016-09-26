@@ -1,30 +1,53 @@
 angular.module("applicationAdminModule").controller("userEditController", function (id, $scope, $state, helperService, roleRepository, userRepository, GlobalInfo) {
 
     $scope.model = {};
-    $scope.model.id = id;
-    
+    $scope.model._id = id;
+
 	helperService.activateView('user');
 
     $scope.save = function (model) {
-   
+
         model.confirmUrl = GlobalInfo.confirmUrl;
-        userRepository.save(model).then(
-            function (response) {
+        
+        if (model._id != undefined) {
+            update(model);
+        } else {
+            insert(model);
+        }
+    };
+
+    var insert = function(model) {
+
+        userRepository.insert(model).then(
+            function(response) {
                 helperService.showAlert(response, "success");
                 $state.go('userList');
             },
-            function (response) {
+            function(response) {
                 helperService.handlerError(response);
             }
-        );   
+        );
     };
 
-    var getRoles = function (value) {
+    var update = function(model) {
 
-        roleRepository.getAllList().then(
+        userRepository.update(model).then(
+            function(response) {
+                helperService.showAlert(response, "success");
+                $state.go('userList');
+            },
+            function(response) {
+                helperService.handlerError(response);
+            }
+        );
+    };
+
+    var getRoles = function (role) {
+
+        roleRepository.getAll().then(
            function (response) {
                $scope.model.roles = response;
-               $scope.model.roleId = value;
+               $scope.model.role = role;
            },
            function (response) {
 
@@ -37,29 +60,29 @@ angular.module("applicationAdminModule").controller("userEditController", functi
 
         userRepository.getModel(idModel).then(
             function (response) {
-                $scope.model.userName = response.userName;
+                $scope.model.name = response.name;
                 $scope.model.email = response.email;
-                getRoles(response.roleId.toString());
+                getRoles(response.role);
                 $scope.model.lockoutEnabled = response.lockoutEnabled;
                 $scope.model.disabled = response.disabled;
             },
             function (response) {
                 helperService.handlerError(response);
             }
-        );     
+        );
     };
 
-    var initialLoad = function() {
+    var initialLoad = function(idModel) {
 
-        if (id != 0) {
+        if (idModel != undefined) {
 
-            getModel(id);
+            getModel(idModel);
         } else {
-          
-            getRoles("0");
+
+            getRoles("");
         }
     };
 
-    initialLoad();
+    initialLoad(id);
 
 });

@@ -1,50 +1,53 @@
-angular.module("applicationAdminModule").factory('roleRepository', function ($http, $q, GlobalInfo) {
+angular.module("applicationAdminModule").factory('roleRepository', function($http, $q, GlobalInfo) {
     return {
-        getAll: function (params) {
+        getAll: function(params) {
             var deferred = $q.defer();
-            $http.get(GlobalInfo.apiUrl + '/Role/GetAll', { params: params })
-                .success(function (response) {
+            $http.get(GlobalInfo.apiUrl + '/roles', {
+                    params: params
+                })
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 
             return deferred.promise;
         },
-        getAllList: function () {
+        insert: function(model) {
             var deferred = $q.defer();
-            $http.get(GlobalInfo.apiUrl + '/Role/GetAllRoles')
-                .success(function (response) {
+
+            $http.post(GlobalInfo.apiUrl + '/roles', model)
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 
             return deferred.promise;
         },
-        save: function (model) {
+        update: function(model) {
             var deferred = $q.defer();
 
-            $http.post(GlobalInfo.apiUrl + '/Role/Save', model)
-                .success(function (response) {
+            $http.put(GlobalInfo.apiUrl + '/roles/' + model._id, model)
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 
             return deferred.promise;
         },
-        getModel: function (id) {
+        getModel: function(_id) {
             var deferred = $q.defer();
 
-            $http.get(GlobalInfo.apiUrl + '/Role/GetModel?id=' + id)
-                .success(function (response) {
+            $http.get(GlobalInfo.apiUrl + '/roles/' + _id)
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 

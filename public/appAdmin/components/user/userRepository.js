@@ -2,7 +2,7 @@ angular.module("applicationAdminModule").factory('userRepository', function ($ht
     return {
         getAll: function (params) {
             var deferred = $q.defer();
-            $http.get(GlobalInfo.apiUrl + '/User/GetAll', { params: params })
+            $http.get(GlobalInfo.apiUrl + '/users', { params: params })
                 .success(function (response) {
                     deferred.resolve(response);
                 })
@@ -12,23 +12,36 @@ angular.module("applicationAdminModule").factory('userRepository', function ($ht
 
             return deferred.promise;
         },
-        save: function (model) {
+        insert: function(model) {
             var deferred = $q.defer();
 
-            $http.post(GlobalInfo.apiUrl + '/User/Save', model)
-                .success(function (response) {
+            $http.post(GlobalInfo.apiUrl + '/users', model)
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 
             return deferred.promise;
         },
-        getModel: function (id) {
+        update: function(model) {
             var deferred = $q.defer();
 
-            $http.get(GlobalInfo.apiUrl + '/User/GetModel?id='+ id)
+            $http.put(GlobalInfo.apiUrl + '/users/' + model._id, model)
+                .success(function(response) {
+                    deferred.resolve(response);
+                })
+                .error(function(response) {
+                    deferred.reject(response);
+                });
+
+            return deferred.promise;
+        },
+        getModel: function (_id) {
+            var deferred = $q.defer();
+
+            $http.get(GlobalInfo.apiUrl + '/users/'+ _id)
                 .success(function (response) {
                     deferred.resolve(response);
                 })

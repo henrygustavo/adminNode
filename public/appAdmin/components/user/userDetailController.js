@@ -1,14 +1,20 @@
 angular.module("applicationAdminModule").controller("userDetailController", function (id, $scope, $state,$filter, helperService, roleRepository, userRepository) {
 
     $scope.model = {};
-    $scope.model.id = id;
-    
+    $scope.model._id = id;
+
 	helperService.activateView('user');
 
-    var getRole = function (idRole) {
-        roleRepository.getModel(idRole).then(
+
+    var getModel = function (idModel) {
+
+        userRepository.getModel(idModel).then(
             function (response) {
-                $scope.model.role = response.name;
+                $scope.model.name = response.name;
+                $scope.model.email = response.email;
+                $scope.model.role = response.role;
+                $scope.model.lockoutEnabled = response.lockoutEnabled;
+                $scope.model.disabled = response.disabled;
             },
             function (response) {
                 helperService.handlerError(response);
@@ -16,24 +22,8 @@ angular.module("applicationAdminModule").controller("userDetailController", func
         );
     };
 
-    var getModel = function (idModel) {
-    
-        userRepository.getModel(idModel).then(
-            function (response) {
-                $scope.model.userName = response.userName;
-                $scope.model.email = response.email;
-                getRole(response.roleId);
-                $scope.model.lockoutEnabled = response.lockoutEnabled;
-                $scope.model.disabled = response.disabled;
-            },
-            function (response) {
-                helperService.handlerError(response);
-            }
-        );     
-    };
-
     var initialLoad = function () {
-        
+
         getModel(id);
     };
 
