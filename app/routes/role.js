@@ -2,11 +2,12 @@ module.exports = function(apiRouter) {
 
     var Role = require('../models/role');
 
-    var CustomError = require('../helpers/customError');
+    var customError = require('../helpers/customError');
+    var requireRole = require('../helpers/requireRole');
 
     apiRouter.route('/roles')
 
-    .post(function(req, res) {
+    .post(requireRole("admin"),function(req, res) {
 
             var role = new Role();
 
@@ -14,7 +15,7 @@ module.exports = function(apiRouter) {
 
             role.save(function(err) {
 
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
 
                 res.json({
                     success: true,
@@ -23,10 +24,10 @@ module.exports = function(apiRouter) {
 
             });
         })
-        .get(function(req, res) {
+        .get(requireRole("admin"),function(req, res) {
 
             Role.find(function(err, roles) {
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
 
                 res.json(roles);
             });
@@ -34,25 +35,25 @@ module.exports = function(apiRouter) {
         });
 
     apiRouter.route('/roles/:role_id')
-        .get(function(req, res) {
+        .get(requireRole("admin"),function(req, res) {
 
             Role.findOne({
                 _id: req.params.role_id
             }, function(err, role) {
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
                 res.json(role);
 
             });
         })
-        .put(function(req, res) {
+        .put(requireRole("admin"),function(req, res) {
             Role.findById(req.params.role_id, function(err, role) {
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
 
                 if (req.body.name) role.name = req.body.name;
 
                 role.save(function(err) {
-                  
-                      if (err) return CustomError(err, res);
+
+                      if (err) return customError(err, res);
 
                     res.json({
                         success: true,

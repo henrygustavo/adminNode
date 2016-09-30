@@ -1,6 +1,5 @@
-module.exports = function CustomError(err,res) {
+module.exports = function customError(err,res) {
 
-console.log(err);
   switch (err.name) {
       case 'ValidationError':
        var modelState = [];

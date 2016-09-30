@@ -1,19 +1,18 @@
 module.exports = function(apiRouter) {
 
     var User = require('../models/user');
-    var CustomError = require('../helpers/customError');
+    var customError = require('../helpers/customError');
+    var requireRole = require('../helpers/requireRole');
 
     apiRouter.route('/users')
 
-        .post(function(req, res) {
+        .post(requireRole("admin"),function(req, res) {
 
             var user = mapModel(new User(), req);
 
-            console.log(req.body.name);
-
             user.save(function(err) {
 
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
 
                 res.json({
                     success: true,
@@ -21,10 +20,10 @@ module.exports = function(apiRouter) {
                 });
             });
         })
-        .get(function(req, res) {
+        .get(requireRole("admin"),function(req, res) {
 
             User.find(function(err, users) {
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
 
                 res.json(users);
             });
@@ -32,7 +31,7 @@ module.exports = function(apiRouter) {
         });
 
     apiRouter.route('/users/:user_id')
-        .get(function(req, res) {
+        .get(requireRole("admin"),function(req, res) {
 
             User.findOne({
                 _id: req.params.user_id
@@ -42,14 +41,14 @@ module.exports = function(apiRouter) {
 
             });
         })
-        .put(function(req, res) {
+        .put(requireRole("admin"),function(req, res) {
             User.findById(req.params.user_id, function(err, user) {
-                if (err) return CustomError(err, res);
+                if (err) return customError(err, res);
 
                 user = mapModel(user, req);
 
                 user.save(function(err) {
-                    if (err) return CustomError(err, res);
+                    if (err) return customError(err, res);
                     res.json({
                         success: true,
                         message: 'usuario actualizado exitosamente'
@@ -73,5 +72,5 @@ module.exports = function(apiRouter) {
         if (req.body.role) user.role = req.body.role;
 
         return user;
-    }
+    };
 }
