@@ -9,11 +9,10 @@ module.exports = function(apiRouter) {
     var supersecret = config.supersecret;
 
     apiRouter.post('/account/authenticate', function(req, res) {
-
         // find the user
         User.findOne({
                  email: req.body.email
-             }).select('email password role name')
+             }).select('emailConfirmed email password role name')
              .exec(function(err, user) {
 
             if (err) return customError(err, res);
@@ -39,6 +38,7 @@ module.exports = function(apiRouter) {
                     var token = jwt.sign({
                             name: user.name,
                             email:user.email,
+                            emailConfirmed:user.emailConfirmed,
                             role: user.role
                         }, supersecret, {
                          expiresIn: '24h'

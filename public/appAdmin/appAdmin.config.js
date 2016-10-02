@@ -108,8 +108,9 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 	 })
 	;
 
-	$authProvider.loginUrl = GlobalInfo.apiUrl + '/authenticate';
-	$authProvider.tokenName = 'access_token';
+	$authProvider.loginUrl = GlobalInfo.apiUrl + '/account/authenticate';
+	$authProvider.authHeader = 'x-access-token';
+	$authProvider.authToken ='';
 
 	blockUIConfig.message = 'Por favor espere!';
 
@@ -138,15 +139,5 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
     PermRoleStore.defineRole('AUTHORIZED', function (stateParams) {
 		return !authManager.isAnonymous();
 	});
-
-	 // Redirect to login if route requires auth and you're not logged in
-    // $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-		//
-    //     if (toState.authenticate && authManager.isAnonymous()) {
-    //             $rootScope.returnToState = toState.url;
-    //             $rootScope.returnToStateParams = toParams.id;
-    //             $state.go('login', {});
-    //         }
-    // });
 })
 ;

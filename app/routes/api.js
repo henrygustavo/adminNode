@@ -13,7 +13,7 @@ module.exports = function(express) {
     apiRouter.use(function(req, res, next) {
         console.log('alguien entrando al sistema');
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+        console.log('token-'+token);
         if (token) {
             //verify token
             jwt.verify(token, supersecret, function(err, decoded) {

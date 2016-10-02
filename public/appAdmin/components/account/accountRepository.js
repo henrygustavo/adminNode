@@ -3,7 +3,7 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
         create: function (model) {
             var deferred = $q.defer();
 
-            $http.post(GlobalInfo.apiUrl + '/Account/Register', model)
+            $http.post(GlobalInfo.apiUrl + '/account/register', model)
                 .success(function(response) {
                     deferred.resolve(response);
                 })
@@ -12,24 +12,11 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
                 });
 
             return deferred.promise;
-        }, 
+        },
         login: function (model) {
             var deferred = $q.defer();
 
-            $http.post(GlobalInfo.apiUrl + '/Account/Login', model)
-                .success(function (response) {
-                    deferred.resolve(response);
-                })
-                .error(function (response) {
-                    deferred.reject(response);
-                });
-
-            return deferred.promise;
-        },
-        registerExternal: function (model) {
-            var deferred = $q.defer();
-
-            $http.post(GlobalInfo.apiUrl + '/Account/RegisterExternal', model)
+            $http.post(GlobalInfo.apiUrl + '/account/authenticate', model)
                 .success(function (response) {
                     deferred.resolve(response);
                 })
@@ -43,7 +30,7 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
 
             var deferred = $q.defer();
 
-            $http.post(GlobalInfo.apiUrl + '/Account/ChangePassword', model)
+            $http.post(GlobalInfo.apiUrl + '/account/changePassword', model)
                 .success(function (response) {
                     deferred.resolve(response);
                 })
@@ -57,7 +44,7 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
 
             var deferred = $q.defer();
 
-            $http.post(GlobalInfo.apiUrl + '/Account/ForgotPassword', model)
+            $http.post(GlobalInfo.apiUrl + '/account/forgotPassword', model)
                 .success(function (response) {
                     deferred.resolve(response);
                 })
@@ -70,7 +57,7 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
         resetPassword: function (model) {
 
             var deferred = $q.defer();
-            $http.post(GlobalInfo.apiUrl + '/Account/ResetPassword', model)
+            $http.post(GlobalInfo.apiUrl + '/account/resetPassword', model)
                 .success(function (response) {
                     deferred.resolve(response);
                 })

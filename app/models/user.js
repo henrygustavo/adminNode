@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var beautifyUnique = require('mongoose-beautiful-unique-validation');
+var mongoosePaginate = require('mongoose-paginate');
 
 var Schema = mongoose.Schema;
 
@@ -96,5 +97,6 @@ userSchema.methods.comparePassword = function(password) {
 
 // enables beautifying
 userSchema.plugin(beautifyUnique);
+userSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('User', userSchema);
