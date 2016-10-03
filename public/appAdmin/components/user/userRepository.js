@@ -1,12 +1,14 @@
-angular.module("applicationAdminModule").factory('userRepository', function ($http, $q, GlobalInfo) {
+angular.module("applicationAdminModule").factory('userRepository', function($http, $q, GlobalInfo) {
     return {
-        getAll: function (params) {
+        getAll: function(params) {
             var deferred = $q.defer();
-            $http.get(GlobalInfo.apiUrl + '/users/'+ params.page+'/'+params.pageSize+'/'+params.sortBy+'/'+params.sortDirection)
-                .success(function (response) {
+            $http.get(GlobalInfo.apiUrl + '/users/', {
+                    params: params
+                })
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 
@@ -38,14 +40,14 @@ angular.module("applicationAdminModule").factory('userRepository', function ($ht
 
             return deferred.promise;
         },
-        getModel: function (_id) {
+        getModel: function(_id) {
             var deferred = $q.defer();
 
-            $http.get(GlobalInfo.apiUrl + '/users/'+ _id)
-                .success(function (response) {
+            $http.get(GlobalInfo.apiUrl + '/users/' + _id)
+                .success(function(response) {
                     deferred.resolve(response);
                 })
-                .error(function (response) {
+                .error(function(response) {
                     deferred.reject(response);
                 });
 

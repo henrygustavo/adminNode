@@ -3,10 +3,22 @@ module.exports = function(apiRouter) {
     var User = require('../models/user');
     var customError = require('../helpers/customError');
     var requireRole = require('../helpers/requireRole');
-    var pagination =  require('../helpers/pagination');
+    var pagination = require('../helpers/pagination');
 
     apiRouter.route('/users')
+    .get(requireRole("admin"), function(req, res) {
+        User.paginate({ $and: [ { name: new RegExp(req.param('filterName'), "i")},
+                                { email: new RegExp(req.param('filterEmail'), "i")}
+                              ]
+                      },
+            pagination.input(req),
+            function(err, results) {
 
+                if (err) return customError(err, res);
+
+                res.json(pagination.output(results));
+            });
+    })
     .post(requireRole("admin"), function(req, res) {
 
         var user = mapModel(new User(), req);
@@ -21,17 +33,6 @@ module.exports = function(apiRouter) {
             });
         });
     });
-
-    apiRouter.route('/users/:page/:pageSize/:sortBy/:sortDirection')
-        .get(requireRole("admin"), function(req, res) {
-            User.paginate({},
-                pagination.input(req), function(err, results) {
-
-                if (err) return customError(err, res);
-
-                res.json(pagination.output(results));
-            });
-        });
 
     apiRouter.route('/users/:user_id')
         .get(requireRole("admin"), function(req, res) {

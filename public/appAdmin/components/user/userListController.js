@@ -10,9 +10,9 @@ angular.module("applicationAdminModule").controller("userListController", functi
 
         var name = (model != undefined) ? model.searchUserName : '';
         var email = (model != undefined) ? model.searchEmail : '';
-        var filterObj = (model != undefined) ? [{ "Field": "name", "Value": name, "Sign": "%" }, { "Field": "email", "Value": email, "Sign": "%" }] : '';
 
-        userService.data.filterOptions.filterText = filterObj;
+        userService.data.filterOptions.filterName = name;
+        userService.data.filterOptions.filterEmail = email;
         $scope.data.pagingOptions.currentPage = 1;
         userService.find();
 

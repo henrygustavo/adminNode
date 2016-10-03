@@ -3,7 +3,7 @@ angular.module("applicationAdminModule").factory('roleRepository', function($htt
         getAll: function(params) {
             var deferred = $q.defer();
             $http.get(GlobalInfo.apiUrl + '/roles', {
-                    //params: params
+                    params: params
                 })
                 .success(function(response) {
                     deferred.resolve(response);

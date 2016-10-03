@@ -14,8 +14,8 @@ angular.module("applicationAdminModule").factory('userService', function ($http,
                     useExternalFilter: true
                 },
                 sortOptions: {
-                    fields: ["id"],
-                    directions: ["desc"]
+                    fields: ["name"],
+                    directions: ["asc"]
                 },
                 pagingOptions: {
                     pageSizes: [10, 20, 50, 100],
@@ -29,7 +29,8 @@ angular.module("applicationAdminModule").factory('userService', function ($http,
 
         find: function() {
             var params = {
-                //filterObj: 'name',
+                filterEmail: service.data.filterOptions.filterEmail,
+                filterName: service.data.filterOptions.filterName,
                 page: service.data.pagingOptions.currentPage,
                 pageSize: service.data.pagingOptions.pageSize,
                 sortBy: service.data.sortOptions.fields[0],

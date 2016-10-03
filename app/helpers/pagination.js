@@ -1,9 +1,9 @@
 module.exports.input = function (req) {
 
     return {
-        page: parseInt(req.params.page),
-        limit: parseInt(req.params.pageSize),
-        sort: createSortObject(req.params.sortBy, req.params.sortDirection)
+        page: parseInt(req.param('page')),
+        limit: parseInt(req.param('pageSize')),
+        sort: createSortObject(req.param('sortBy'), req.param('sortDirection'))
     };
 };
 

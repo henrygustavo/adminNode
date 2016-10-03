@@ -1,24 +1,24 @@
-angular.module("applicationAdminModule").controller("roleListController", function ($scope, roleService,helperService) {
+angular.module("applicationAdminModule").controller("roleListController", function($scope, roleService, helperService) {
 
-	helperService.activateView('role');
+    helperService.activateView('role');
 
     roleService.iniData();
     roleService.find();
 
     $scope.data = roleService.data;
 
-    $scope.search = function (model) {
+    $scope.search = function(model) {
 
         var name = (model != undefined) ? model.searchName : '';
-        var filterObj = (model != undefined) ? [{ "Field": "Name", "Value": name, "Sign": "%" }] : '';
-        
-        roleService.data.filterOptions.filterText = filterObj;
-		$scope.data.pagingOptions.currentPage = 1;
+
+        roleService.data.filterOptions.filterName = name;
+
+        $scope.data.pagingOptions.currentPage = 1;
 
         roleService.find();
 
     };
-    $scope.$watch('data.sortOptions.fields', function (newVal, oldVal) {
+    $scope.$watch('data.sortOptions.fields', function(newVal, oldVal) {
 
         if (newVal.length > 0 && newVal !== oldVal) {
             $scope.data.pagingOptions.currentPage = 1;
@@ -26,7 +26,7 @@ angular.module("applicationAdminModule").controller("roleListController", functi
         }
     }, true);
 
-    $scope.$watch('data.sortOptions.directions', function (newVal, oldVal) {
+    $scope.$watch('data.sortOptions.directions', function(newVal, oldVal) {
 
         if (newVal.length > 0 && newVal !== oldVal) {
             $scope.data.pagingOptions.currentPage = 1;
@@ -34,10 +34,10 @@ angular.module("applicationAdminModule").controller("roleListController", functi
         }
     }, true);
 
-    $scope.$watch('data.pagingOptions', function (newVal, oldVal) {
+    $scope.$watch('data.pagingOptions', function(newVal, oldVal) {
         if (newVal !== oldVal) {
 
-			if (newVal.pageSize != oldVal.pageSize) {
+            if (newVal.pageSize != oldVal.pageSize) {
                 $scope.data.pagingOptions.currentPage = 1;
             }
 
@@ -61,10 +61,21 @@ angular.module("applicationAdminModule").controller("roleListController", functi
         useExternalSorting: true,
         sortInfo: $scope.data.sortOptions,
         rowHeight: 50,
-        columnDefs: [
-                    { field: '', displayName: '', width: '70', sortable: false, cellTemplate: '<div class="ngCellText">{{row.rowIndex + 1}}</div>' },
-                    { field: 'name', displayName: 'Nombre' },
-                    { field: 'edit', displayName: '', width: '120', sortable: false, cellTemplate: rowTemplate }
-        ]
+        columnDefs: [{
+            field: '',
+            displayName: '',
+            width: '70',
+            sortable: false,
+            cellTemplate: '<div class="ngCellText">{{row.rowIndex + 1}}</div>'
+        }, {
+            field: 'name',
+            displayName: 'Nombre'
+        }, {
+            field: 'edit',
+            displayName: '',
+            width: '120',
+            sortable: false,
+            cellTemplate: rowTemplate
+        }]
     };
 });
