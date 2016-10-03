@@ -2,7 +2,7 @@ angular.module("applicationAdminModule").factory('userRepository', function ($ht
     return {
         getAll: function (params) {
             var deferred = $q.defer();
-            $http.get(GlobalInfo.apiUrl + '/users', { params: params })
+            $http.get(GlobalInfo.apiUrl + '/users/'+ params.page+'/'+params.pageSize+'/'+params.sortBy+'/'+params.sortDirection)
                 .success(function (response) {
                     deferred.resolve(response);
                 })

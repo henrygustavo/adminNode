@@ -29,7 +29,7 @@ angular.module("applicationAdminModule").factory('userService', function ($http,
 
         find: function() {
             var params = {
-                filterObj: JSON.stringify(service.data.filterOptions.filterText),
+                //filterObj: 'name',
                 page: service.data.pagingOptions.currentPage,
                 pageSize: service.data.pagingOptions.pageSize,
                 sortBy: service.data.sortOptions.fields[0],

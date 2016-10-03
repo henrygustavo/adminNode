@@ -9,9 +9,9 @@ var roleSchema = new Schema({
 
     name: {
         type: String,
-        lowercase: true,
-        unique: "El nombre debe ser único",
-        required: "El nombre es requerido"
+        lowercase: true
+        //unique: "El nombre debe ser único",
+        //required: "El nombre es requerido"
 
     }
 });

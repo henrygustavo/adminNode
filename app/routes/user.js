@@ -3,45 +3,49 @@ module.exports = function(apiRouter) {
     var User = require('../models/user');
     var customError = require('../helpers/customError');
     var requireRole = require('../helpers/requireRole');
+    var pagination =  require('../helpers/pagination');
 
     apiRouter.route('/users')
 
-        .post(requireRole("admin"),function(req, res) {
+    .post(requireRole("admin"), function(req, res) {
 
-            var user = mapModel(new User(), req);
+        var user = mapModel(new User(), req);
 
-            user.save(function(err) {
+        user.save(function(err) {
+
+            if (err) return customError(err, res);
+
+            res.json({
+                success: true,
+                message: 'usuario creado exitosamente'
+            });
+        });
+    });
+
+    apiRouter.route('/users/:page/:pageSize/:sortBy/:sortDirection')
+        .get(requireRole("admin"), function(req, res) {
+            User.paginate({},
+                pagination.input(req), function(err, results) {
 
                 if (err) return customError(err, res);
 
-                res.json({
-                    success: true,
-                    message: 'usuario creado exitosamente'
-                });
+                res.json(pagination.output(results));
             });
-        })
-        .get(requireRole("admin"),function(req, res) {
-
-            User.find(function(err, users) {
-                if (err) return customError(err, res);
-
-                res.json(users);
-            });
-
         });
 
     apiRouter.route('/users/:user_id')
-        .get(requireRole("admin"),function(req, res) {
+        .get(requireRole("admin"), function(req, res) {
 
             User.findOne({
                 _id: req.params.user_id
             }, function(err, user) {
                 if (err) return res.send(err);
+
                 res.json(user);
 
             });
         })
-        .put(requireRole("admin"),function(req, res) {
+        .put(requireRole("admin"), function(req, res) {
             User.findById(req.params.user_id, function(err, user) {
                 if (err) return customError(err, res);
 

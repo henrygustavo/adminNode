@@ -61,7 +61,7 @@ angular.module("applicationAdminModule").controller("userListController", functi
         columnDefs: [
                     { field: '', displayName: '', width: '70', sortable: false, cellTemplate: '<div class="ngCellText">{{row.rowIndex + 1}}</div>' },
                     { field: 'name', displayName: 'Nombre de Usurio', width: '200' },
-                    { field: 'roleName', displayName: 'Rol', width: '100' },
+                    { field: 'role', displayName: 'Rol', width: '100' },
                     { field: 'email', displayName: 'Email', width: '250' },
                     { field: 'disabled', displayName: 'Deshabilitado', width: '100' },
                     { field: 'lastActivityDate', displayName: 'Ultima actualizacion', cellFilter: 'date:\'dd/MM/yyyy HH:MM:ss\'', width: '200'},
