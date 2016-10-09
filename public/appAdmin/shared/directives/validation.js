@@ -17,18 +17,18 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 	};
 })
 .directive('ngUniqueEmail', function($http, GlobalInfo, helperService) {
-		
+
 		return {
 			require: 'ngModel',
 			link: function(scope, elem, attr, ctrl) {
 				//when the scope changes, check the name.
 				scope.$watch(attr.ngModel, function (value) {
 				    if (value == undefined || value == '') return;
-				   
-						$http.get(GlobalInfo.apiUrl + '/account/ValidateEmail/?email=' + value).success(function(response) {
+
+						$http.get(GlobalInfo.apiUrl + '/users/email/' + value).success(function(response) {
 						    ctrl.$setValidity('ngUniqueEmail', false);
 							//set the validity of the field
-							if (response.success) {
+							if (!response.exist) {
 								ctrl.$setValidity('ngUniqueEmail', true);
 
 							} else {
@@ -43,19 +43,19 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 		};
 	})
 		.directive('ngUniqueUserName', function ($http, GlobalInfo, helperService) {
-		
+
 		return {
 			require: 'ngModel',
 			link: function (scope, elem, attr, ctrl) {
 				//when the scope changes, check the name.
 				scope.$watch(attr.ngModel, function (value) {
 					if (value == undefined || value == '') return;
-			
+
 						// call to some API that returns { isValid: true } or { isValid: false }
-						$http.get(GlobalInfo.apiUrl + '/account/ValidateUserName/?userName=' + value).success(function (response) {
+						$http.get(GlobalInfo.apiUrl + '/users/name/' + value).success(function (response) {
 
 							//set the validity of the field
-							if (response.success) {
+							if (!response.exist) {
 								ctrl.$setValidity('ngUniqueUserName', true);
 
 							} else {
@@ -64,7 +64,7 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 						}).error(function (response) {
 							helperService.handlerError(response);
 							ctrl.$setValidity('ngUniqueUserName', false);
-						});		
+						});
 				});
 			}
 		};
@@ -83,7 +83,7 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 							ngModelCtrl.$setValidity('ngNumbersOnly', false);
 						} else {
 							ngModelCtrl.$setValidity('ngNumbersOnly', true);
-							
+
 						}
 						return transformedInput;
 					}
@@ -138,8 +138,8 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 				pre: function (scope, element, attr) {
 
 					// Error handling.
-					// 
-					// Make sure we don't go into an infinite 
+					//
+					// Make sure we don't go into an infinite
 					// compile loop if something goes wrong.
 					compileGuard++;
 					if (compileGuard >= 10) {
@@ -157,7 +157,7 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 						var result = scope.$eval(expr);
 						if (result === false) {
 							// Set the attribute to `null` to remove the attribute.
-							// 
+							//
 							// See: https://docs.angularjs.org/api/ng/type/$compile.directive.Attributes#$set
 							attr.$set(directive, null);
 						}
@@ -172,10 +172,10 @@ angular.module("applicationAdminModule").directive("ngMatch", function() {
 					var result = $compile(element)(scope);
 
 					// Error handling.
-					// 
+					//
 					// Reset the compileGuard after compilation
 					// (otherwise we can't use this directive multiple times).
-					// 
+					//
 					// It should be safe to reset here because we will
 					// only reach this code *after* the `$compile()`
 					// call above has returned.

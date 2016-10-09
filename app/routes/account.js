@@ -48,6 +48,7 @@ module.exports = function(apiRouter) {
                     res.json({
                         success: true,
                         message:  "Accesso autorizado",
+                        name :user.name,
                         token: token
                     });
                 }

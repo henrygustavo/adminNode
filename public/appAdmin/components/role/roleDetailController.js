@@ -21,5 +21,5 @@ angular.module("applicationAdminModule").controller("roleDetailController", func
         getModel(idModel);
     };
 
-    initialLoad(idModel);
+    initialLoad(id);
 });

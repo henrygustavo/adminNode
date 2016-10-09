@@ -8,7 +8,7 @@
 		<div class="row">
 			<div class="col-md-4 well col-lg-offset-4">
 
-					<input-text-edit label="Nombre de Usurio" name="userName" readonly></input-text-edit>
+					<input-text-edit label="Nombre de Usurio" name="name" readonly></input-text-edit>
 
 					<input-text-edit label="Email" name="email" readonly></input-text-edit>
 
@@ -26,7 +26,7 @@
 						<a ui-sref="userList" class="btn btn-primary btn-block">Regresar</a>
 					</div>
 					<div class="col-md-9" style="padding: 1px">
-						<a ui-sref="userEdit({id:model.id})" style="float: right" class="btn btn-default btn-block">Editar</a>
+						<a ui-sref="userEdit({id:model._id})" style="float: right" class="btn btn-default btn-block">Editar</a>
 					</div>
 				</div>
 			</div>

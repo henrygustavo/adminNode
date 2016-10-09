@@ -8,15 +8,15 @@
 		<div class="row">
 			<div class="col-md-4 well col-lg-offset-4">
 
-				<input-text-edit label="Nombre de Usurio" name="name" ng-model="model.name" ng-required="(model._id==undefined)" minlength="4" ng-disabled="(model._id==undefined)?false:true" ng-directive-if="{'ng-unique-user-name': 'model._id==undefined'}" ng-unique-user-name></input-text-edit>
+				<input-text-edit label="Nombre de Usurio" name="name" ng-model="model.name" ng-required="(model._id==0)" minlength="4" ng-disabled="(model._id==0)?false:true" ng-directive-if="{'ng-unique-user-name': 'model._id==0'}" ng-unique-user-name></input-text-edit>
 
-				<input-text-edit label="Email" name="email" ng-model="model.email" email ng-directive-if="{'ng-unique-email': 'model._id==undefined'}" ng-unique-email ng-disabled="(model._id==undefined)?false:true" ng-required="(model._id==undefined)"></input-text-edit>
+				<input-text-edit label="Email" name="email" ng-model="model.email" email ng-directive-if="{'ng-unique-email': 'model._id==0'}" ng-unique-email ng-disabled="(model._id==0)?false:true" ng-required="(model._id==0)"></input-text-edit>
 
-				<input-text-edit label="Contraseña" name="password" password ng-hide="(model._id==undefined)?false:true" ng-required="(model._id==undefined)"></input-text-edit>
+				<input-text-edit label="Contraseña" name="password" password ng-hide="(model._id==0)?false:true" ng-required="(model._id==0)"></input-text-edit>
 
-				<input-text-edit label="Confirmar contraseña" name="confirmPassword" ng-hide="(model._id==undefined)?false:true" minlength="6" password ng-match="model.password" ng-model="model.confirmPassword"></input-text-edit>
+				<input-text-edit label="Confirmar contraseña" name="confirmPassword" ng-hide="(model._id==0)?false:true" minlength="6" password ng-match="model.password" ng-model="model.confirmPassword"></input-text-edit>
 
-				<input-text-edit label="Rol" name="roleId" select="role.name as role.name for role in model.roles" required></input-text-edit>
+				<input-text-edit label="Rol" name="role" select="role.value as role.text for role in model.roles" required></input-text-edit>
 
 				<input-text-edit label="Bloqueo Habilitado" name="lockoutEnabled" checkbox></input-text-edit>
 

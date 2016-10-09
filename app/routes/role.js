@@ -9,7 +9,9 @@ module.exports = function(apiRouter) {
     apiRouter.route('/roles')
         .get(requireRole("admin"), function(req, res) {
 
-            Role.paginate({ name: new RegExp(req.param('filterName'), "i")}, pagination.input(req), function(err, results) {
+            Role.paginate({
+                name: new RegExp(req.param('filterName'), "i")
+            }, pagination.input(req), function(err, results) {
 
                 if (err) return customError(err, res);
 
@@ -26,10 +28,18 @@ module.exports = function(apiRouter) {
 
                 if (err) return customError(err, res);
 
-                res.json({
-                    success: true,
-                    message: 'role creado exitosamente'
-                });
+                res.json('role creado exitosamente');
+            });
+        });
+
+    apiRouter.route('/rolesList')
+        .get(requireRole("admin"), function(req, res) {
+
+            Role.find({ }, function(err, results) {
+
+                if (err) return customError(err, res);
+
+                res.json(pagination.CreateDictionaryList(results,"name","name"));
             });
         });
 
@@ -54,10 +64,7 @@ module.exports = function(apiRouter) {
 
                     if (err) return customError(err, res);
 
-                    res.json({
-                        success: true,
-                        message: 'role actualizado exitosamente'
-                    });
+                    res.json('role actualizado exitosamente');
                 });
             });
         });

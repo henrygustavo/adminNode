@@ -8,8 +8,8 @@ angular.module("applicationAdminModule").controller("userEditController", functi
     $scope.save = function (model) {
 
         model.confirmUrl = GlobalInfo.confirmUrl;
-        
-        if (model._id != undefined) {
+
+        if (model._id != 0) {
             update(model);
         } else {
             insert(model);
@@ -44,7 +44,7 @@ angular.module("applicationAdminModule").controller("userEditController", functi
 
     var getRoles = function (role) {
 
-        roleRepository.getAll().then(
+        roleRepository.getAllList().then(
            function (response) {
                $scope.model.roles = response;
                $scope.model.role = role;
@@ -63,8 +63,8 @@ angular.module("applicationAdminModule").controller("userEditController", functi
                 $scope.model.name = response.name;
                 $scope.model.email = response.email;
                 getRoles(response.role);
-                $scope.model.lockoutEnabled = response.lockoutEnabled;
-                $scope.model.disabled = response.disabled;
+                $scope.model.lockoutEnabled = (response.lockoutEnabled == "1");
+                $scope.model.disabled = (response.disabled  == "1");
             },
             function (response) {
                 helperService.handlerError(response);
@@ -74,7 +74,7 @@ angular.module("applicationAdminModule").controller("userEditController", functi
 
     var initialLoad = function(idModel) {
 
-        if (idModel != undefined) {
+        if (idModel != 0) {
 
             getModel(idModel);
         } else {

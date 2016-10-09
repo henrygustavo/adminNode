@@ -45,7 +45,7 @@ angular.module("applicationAdminModule").controller("roleListController", functi
         }
     }, true);
 
-    var rowTemplate = '<div class="ngCellText" style="text-align:center"><a href="#/role/edit/{{row.entity.id}}" class="btn btn-xs btn-info" style="font-size:15px;margin-right:10px"><i class="glyphicon glyphicon-pencil"></i></a><a href="#/role/detail/{{row.entity.id}}" class="btn btn-xs btn-warning" style="font-size:15px"><i class="glyphicon glyphicon-eye-open"></i></a></div>';
+    var rowTemplate = '<div class="ngCellText" style="text-align:center"><a href="#/role/edit/{{row.entity._id}}" class="btn btn-xs btn-info" style="font-size:15px;margin-right:10px"><i class="glyphicon glyphicon-pencil"></i></a><a href="#/role/detail/{{row.entity._id}}" class="btn btn-xs btn-warning" style="font-size:15px"><i class="glyphicon glyphicon-eye-open"></i></a></div>';
 
     $scope.ngGridView = {
         data: 'data.entities.content',

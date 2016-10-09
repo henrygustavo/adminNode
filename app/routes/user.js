@@ -27,12 +27,35 @@ module.exports = function(apiRouter) {
 
             if (err) return customError(err, res);
 
-            res.json({
-                success: true,
-                message: 'usuario creado exitosamente'
-            });
+            res.json('usuario creado exitosamente');
         });
     });
+
+    apiRouter.route('/users/name/:name')
+        .get(requireRole("admin"), function(req, res) {
+
+            User.findOne({
+                name: req.params.name
+            }, function(err, user) {
+                if (err) return res.send(err);
+
+                res.json({ exist:user !=  null});
+
+            });
+        });
+
+        apiRouter.route('/users/email/:email')
+            .get(requireRole("admin"), function(req, res) {
+                console.log(req.params.email);
+                User.findOne({
+                    email: req.params.email
+                }, function(err, user) {
+                    if (err) return res.send(err);
+                
+                    res.json({ exist: user !=  null});
+
+                });
+            });
 
     apiRouter.route('/users/:user_id')
         .get(requireRole("admin"), function(req, res) {
@@ -54,10 +77,7 @@ module.exports = function(apiRouter) {
 
                 user.save(function(err) {
                     if (err) return customError(err, res);
-                    res.json({
-                        success: true,
-                        message: 'usuario actualizado exitosamente'
-                    });
+                    res.json('usuario actualizado exitosamente');
                 });
             });
         });

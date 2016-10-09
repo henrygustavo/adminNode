@@ -14,6 +14,18 @@ angular.module("applicationAdminModule").factory('roleRepository', function($htt
 
             return deferred.promise;
         },
+        getAllList: function () {
+            var deferred = $q.defer();
+            $http.get(GlobalInfo.apiUrl + '/rolesList')
+                .success(function (response) {
+                    deferred.resolve(response);
+                })
+                .error(function (response) {
+                    deferred.reject(response);
+                });
+
+            return deferred.promise;
+        },
         insert: function(model) {
             var deferred = $q.defer();
 

@@ -10,9 +10,9 @@ angular.module("applicationAdminModule").controller("accountLoginController", fu
 
             helperService.activateMenu();
 
-            var message = 'Hola ' + res.name + ' !';
+            var message = 'Hola ' + res.data.name + ' !';
 
-            if (!res.emailConfirmed) {
+            if (!res.data.emailConfirmed) {
                 message += 'Solo como recordatorio,por favor activa tu cuenta pronto :)';
             }
 
