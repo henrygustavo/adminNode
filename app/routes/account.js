@@ -1,58 +1,85 @@
-module.exports = function(apiRouter) {
+module.exports = function(apiRouter, nev) {
 
     var User = require('../models/user');
-    var  customError = require('../helpers/customError');
+    var VerificationToken = require('../models/verificationToken');
 
+    var customError = require('../helpers/customError');
+    var bcrypt = require('bcrypt-nodejs');
     var config = require('../../config');
     var jwt = require('jsonwebtoken');
-
+    var mongoose = require('mongoose');
     var supersecret = config.supersecret;
 
     apiRouter.post('/account/authenticate', function(req, res) {
         // find the user
         User.findOne({
-                 email: req.body.email
-             }).select('emailConfirmed email password role name')
-             .exec(function(err, user) {
+                email: req.body.email
+            }).select('emailConfirmed email password role name')
+            .exec(function(err, user) {
 
-            if (err) return customError(err, res);
+                if (err) return customError(err, res);
 
-            if (!user) {
-                res.json({
-                    success: false,
-                    message: 'La autenticacion ha fallado.El usuario no existe'
-                });
-            } else if (user) {
-
-                 var validaPassword = user.comparePassword(req.body.password);
-                // check if password matches
-                if (!validaPassword) {
+                if (!user) {
                     res.json({
                         success: false,
-                        message: 'La autenticacion ha fallado.Contrasena no existe.'
+                        message: 'La autenticacion ha fallado.El usuario no existe'
                     });
-                } else {
+                } else if (user) {
 
-                    // if user is found and password is right
-                    // create a token
-                    var token = jwt.sign({
+                    var validaPassword = user.comparePassword(req.body.password);
+                    // check if password matches
+                    if (!validaPassword) {
+                        res.json({
+                            success: false,
+                            message: 'La autenticacion ha fallado.Contrasena no existe.'
+                        });
+                    } else {
+
+                        // if user is found and password is right
+                        // create a token
+                        var token = jwt.sign({
                             name: user.name,
-                            email:user.email,
-                            emailConfirmed:user.emailConfirmed,
+                            email: user.email,
+                            emailConfirmed: user.emailConfirmed,
                             role: user.role
                         }, supersecret, {
-                         expiresIn: '24h'
-                    });
+                            expiresIn: '24h'
+                        });
 
-                    // return the information including token as JSON
-                    res.json({
-                        success: true,
-                        message:  "Accesso autorizado",
-                        name :user.name,
-                        token: token
-                    });
+                        // return the information including token as JSON
+                        res.json({
+                            success: true,
+                            message: "Accesso autorizado",
+                            name: user.name,
+                            token: token
+                        });
+                    }
                 }
-            }
-        });
+            });
     });
+
+    apiRouter.get('/email-verification/:token', function(req, res) {
+
+        var token = req.params.token;
+
+        VerificationToken.findOne({
+            token: token
+        }, function(err, doc) {
+            if (err) return customError(err, res);
+            User.findOne({
+                _id: doc._userId
+            }, function(err, user) {
+                if (err) return customError(err, res);
+                user["emailConfirmed"] = true;
+                user.save(function(err) {
+                    if (err) return customError(err, res);
+
+                    res.json('Verified');
+
+                })
+            })
+        })
+
+    });
+
 }

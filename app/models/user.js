@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var beautifyUnique = require('mongoose-beautiful-unique-validation');
 var mongoosePaginate = require('mongoose-paginate');
-
 var Schema = mongoose.Schema;
 
 var bcrypt = require('bcrypt-nodejs');
@@ -32,7 +31,7 @@ var userSchema = new Schema({
     password: {
         type: String,
         required: "El password es requerido",
-        select: false
+        select:false
     },
     lockoutEndDateUtc: {
         type: Date
@@ -40,31 +39,31 @@ var userSchema = new Schema({
     lockoutEnabled: {
         type: Number,
         default: 0,
-        //required: true
+        required: true
     },
     accessFailedCount: {
         type: Number,
         default: 0,
-        //required: true
+        required: true
     },
     creationDate: {
         type: Date,
-        //required: "Fecha de creación requerido",
+        required: "Fecha de creación requerido",
         default: Date.now
     },
     lastActivityDate: {
         type: Date,
-        //required: "Última fecha de actividad es requerida",
+        required: "Última fecha de actividad es requerida",
         default: Date.now
     },
     disabled: {
         type: Number,
         default: 0,
-        //required: true
+        required: true
     },
     role: {
         type: String,
-        required: "El rol es requerido",
+        required: "El rol es requerido"
     }
 });
 

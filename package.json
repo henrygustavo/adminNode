@@ -19,6 +19,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
+    "email-verification": "^0.4.5",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
     "linq": "^3.0.5",
@@ -26,7 +27,9 @@
     "mongoose": "^4.6.2",
     "mongoose-beautiful-unique-validation": "^5.1.1",
     "mongoose-paginate": "^5.0.0",
+    "mongoose-schema-extend": "^0.2.0",
     "morgan": "^1.7.0",
+    "node-uuid": "^1.4.7",
     "nodemailer": "^2.6.4"
   }
 }

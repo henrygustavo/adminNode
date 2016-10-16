@@ -8,6 +8,7 @@ module.exports = function(express) {
     var supersecret = config.supersecret;
 
     var accountRoute = require('./account')(apiRouter);
+
     //Middleware to verify a token
 
     apiRouter.use(function(req, res, next) {

@@ -1,35 +1,59 @@
-module.exports = function(apiRouter) {
+module.exports = function(apiRouter, nev) {
 
     var User = require('../models/user');
+    var VerificationToken = require('../models/verificationToken');
+
     var customError = require('../helpers/customError');
     var requireRole = require('../helpers/requireRole');
     var pagination = require('../helpers/pagination');
 
+    var emailService = require('../helpers/emailService');
+
     apiRouter.route('/users')
-    .get(requireRole("admin"), function(req, res) {
-        User.paginate({ $and: [ { name: new RegExp(req.param('filterName'), "i")},
-                                { email: new RegExp(req.param('filterEmail'), "i")}
-                              ]
-                      },
-            pagination.input(req),
-            function(err, results) {
+        .get(requireRole("admin"), function(req, res) {
+            User.paginate({
+                    $and: [{
+                        name: new RegExp(req.param('filterName'), "i")
+                    }, {
+                        email: new RegExp(req.param('filterEmail'), "i")
+                    }]
+                },
+                pagination.input(req),
+                function(err, results) {
+
+                    if (err) return customError(err, res);
+
+                    res.json(pagination.output(results));
+                });
+        })
+        .post(requireRole("admin"), function(req, res) {
+
+            var user = mapModel(new User(), req);
+
+            user.save(function(err) {
 
                 if (err) return customError(err, res);
 
-                res.json(pagination.output(results));
+                var verificationToken = new VerificationToken({
+                    _userId: user._id
+                });
+
+                verificationToken.createVerificationToken(function(err, token) {
+
+                    if (err) return customError(err, res);
+
+                    emailService.sendVerificationEmail(user.email, token, function(error, success) {
+
+                        if (err) return customError(err, res);
+
+                        res.json('An email has been sent to you. Please check it to verify your account.');
+
+
+                        console.info("Sent to postmark for delivery")
+                    });
+                });
             });
-    })
-    .post(requireRole("admin"), function(req, res) {
-
-        var user = mapModel(new User(), req);
-
-        user.save(function(err) {
-
-            if (err) return customError(err, res);
-
-            res.json('usuario creado exitosamente');
         });
-    });
 
     apiRouter.route('/users/name/:name')
         .get(requireRole("admin"), function(req, res) {
@@ -39,23 +63,27 @@ module.exports = function(apiRouter) {
             }, function(err, user) {
                 if (err) return res.send(err);
 
-                res.json({ exist:user !=  null});
+                res.json({
+                    exist: user != null
+                });
 
             });
         });
 
-        apiRouter.route('/users/email/:email')
-            .get(requireRole("admin"), function(req, res) {
-                console.log(req.params.email);
-                User.findOne({
-                    email: req.params.email
-                }, function(err, user) {
-                    if (err) return res.send(err);
-                
-                    res.json({ exist: user !=  null});
+    apiRouter.route('/users/email/:email')
+        .get(requireRole("admin"), function(req, res) {
+            console.log(req.params.email);
+            User.findOne({
+                email: req.params.email
+            }, function(err, user) {
+                if (err) return res.send(err);
 
+                res.json({
+                    exist: user != null
                 });
+
             });
+        });
 
     apiRouter.route('/users/:user_id')
         .get(requireRole("admin"), function(req, res) {
