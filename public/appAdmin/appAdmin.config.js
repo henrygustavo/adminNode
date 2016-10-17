@@ -132,9 +132,9 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 .constant('GlobalInfo',
 {
 	apiUrl: '/api',
-	localHostUrl: localHostUrl+'/admin/',
-	resetUrl: localHostUrl + '/admin/resetpassword',
-	confirmUrl: localHostUrl + '/verificationToken'
+	localHostUrl: localHostUrl+'/admin#/',
+	resetUrl: localHostUrl + '/admin#/resetpassword',
+	confirmUrl: localHostUrl + '/admin#/verificationToken'
 })
 .run(function (PermRoleStore, authManager, $rootScope, $state) {
 
