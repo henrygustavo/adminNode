@@ -31,21 +31,6 @@ angular.module("applicationAdminModule").controller("accountLoginController", fu
         }
     };
 
-    var handlerEmailConfirmation = function() {
-
-        var searchObject = $location.search();
-
-        if (searchObject.emailconfirmation != undefined) {
-
-            if (searchObject.emailconfirmation == 'success') {
-
-                helperService.showAlert("Gracias por su confirmación", 'success');
-            } else {
-                helperService.showAlert(searchObject.emailconfirmation, 'error');
-            }
-        }
-    };
-
     var handlerRedirect = function() {
 
         if ($scope.isRedirected) {
@@ -59,8 +44,6 @@ angular.module("applicationAdminModule").controller("accountLoginController", fu
         }
 
     };
-
-    handlerEmailConfirmation();
 
     verifyIsisAuthenticated();
 });

@@ -66,6 +66,19 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
                 });
 
             return deferred.promise;
+        },
+        verificationToken: function (token) {
+
+            var deferred = $q.defer();
+            $http.get(GlobalInfo.apiUrl + '/account/verificationToken/'+ token)
+                .success(function (response) {
+                    deferred.resolve(response);
+                })
+                .error(function (response) {
+                    deferred.reject(response);
+                });
+
+            return deferred.promise;
         }
     };
 });

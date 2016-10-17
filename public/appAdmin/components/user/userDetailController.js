@@ -4,8 +4,7 @@ angular.module("applicationAdminModule").controller("userDetailController", func
     $scope.model._id = id;
 
 	helperService.activateView('user');
-
-
+  
     var getModel = function (idModel) {
 
         userRepository.getModel(idModel).then(

@@ -12,46 +12,57 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 			templateUrl: '/appAdmin/components/home/homeView.html',
 			controller: 'homeController',
 			authenticate: true,
-			//data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'	}}
+			data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'	}}
 	})
 	 .state('login', {
 			url: '/login',
 			templateUrl: '/appAdmin/components/account/accountLoginView.html',
 			controller: 'accountLoginController',
-			//data: {	permissions: {only: ['ANONYMOUS'] } }
+			data: {	permissions: {only: ['ANONYMOUS'] } }
 	 })
      .state('changepw', {
         	url: '/changepassword',
         	templateUrl: '/appAdmin/components/account/accountChangePasswordView.html',
         	controller: 'accountChangePasswordController',
 					authenticate: true,
-					//data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'}	}
+					data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'}	}
         	  })
 	 .state('accessDenied', {
 			url: '/accessDenied',
 			templateUrl: '/appAdmin/components/accessDenied/accessDeniedView.html',
 			controller: 'accessDeniedController',
 			authenticate: true,
-			//data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'	}}
+			data: {	permissions: {only: ['AUTHORIZED'],redirectTo: 'login'	}}
 	  })
 	 .state('forgotpw', {
 			url: '/forgotpassword',
 			templateUrl: '/appAdmin/components/account/accountForgotPasswordView.html',
 			controller: 'accountForgotPasswordController',
-			//data: {	permissions: {only: ['ANONYMOUS']	}}
+			data: {	permissions: {only: ['ANONYMOUS']	}}
 	  })
 	.state('resetpw', {
 			url: '/resetpassword',
 			templateUrl: '/appAdmin/components/account/accountResetPasswordView.html',
 			controller: 'accountResetPasswordController',
-			//data: {	permissions: {only: ['ANONYMOUS']	}}
+			data: {	permissions: {only: ['ANONYMOUS']	}}
+	})
+	.state('verificationToken', {
+		 url: '/verificationToken/:token',
+		 templateUrl: '/appAdmin/components/account/accountVerificationTokenView.html',
+		 controller: 'accountVerificationTokenController',
+		 data: {	permissions: {only: ['ANONYMOUS']	}},
+		 resolve: {
+					 token: function ($stateParams) {
+						 return $stateParams.token;
+						 }
+				 }
 	})
 	 .state('userList', {
 			url: '/user',
 			templateUrl: '/appAdmin/components/user/userListView.html',
 			controller: 'userListController',
 			authenticate: true,
-			//data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'}	}
+			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'}	}
 	 })
 	 .state('userEdit', {
 			url: '/user/edit/:id',
@@ -63,7 +74,7 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 							return $stateParams.id;
 							}
 					},
-			//data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}}
+			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}}
 	 })
 	.state('userDetail', {
 			url: '/user/detail/:id',
@@ -74,14 +85,14 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 						id: function ($stateParams) {
 							return $stateParams.id;}
 					},
-			//data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'}	}
+			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'}	}
 	})
 	 .state('roleList', {
 			url: '/role',
 			templateUrl: '/appAdmin/components/role/roleListView.html',
 			controller: 'roleListController',
 			authenticate: true,
-			//data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	} }
+			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	} }
 	 })
 	 .state('roleEdit', {
 			url: '/role/edit/:id',
@@ -92,7 +103,7 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 						id: function ($stateParams) {
 							return $stateParams.id;}
 					},
-			//data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}}
+			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}}
 	 })
 	 .state('roleDetail', {
 			url: '/role/detail/:id',
@@ -104,7 +115,7 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 							return $stateParams.id;
 						}
 					},
-			//data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}}
+			data: {	permissions: {only: ['ADMIN'],redirectTo: 'accessDenied'	}}
 	 })
 	;
 
@@ -123,7 +134,7 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 	apiUrl: '/api',
 	localHostUrl: localHostUrl+'/admin/',
 	resetUrl: localHostUrl + '/admin/resetpassword',
-	confirmUrl: localHostUrl + '/admin/login?emailconfirmation'
+	confirmUrl: localHostUrl + '/verificationToken'
 })
 .run(function (PermRoleStore, authManager, $rootScope, $state) {
 

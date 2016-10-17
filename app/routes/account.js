@@ -4,10 +4,9 @@ module.exports = function(apiRouter, nev) {
     var VerificationToken = require('../models/verificationToken');
 
     var customError = require('../helpers/customError');
-    var bcrypt = require('bcrypt-nodejs');
     var config = require('../../config');
     var jwt = require('jsonwebtoken');
-    var mongoose = require('mongoose');
+
     var supersecret = config.supersecret;
 
     apiRouter.post('/account/authenticate', function(req, res) {
@@ -58,23 +57,37 @@ module.exports = function(apiRouter, nev) {
             });
     });
 
-    apiRouter.get('/email-verification/:token', function(req, res) {
+    apiRouter.get('/account/verificationToken/:token', function(req, res) {
 
         var token = req.params.token;
 
         VerificationToken.findOne({
             token: token
         }, function(err, doc) {
+          
             if (err) return customError(err, res);
+
+            if (doc==null) return res.json({
+                success: false,
+                message: 'error'
+            });
+
             User.findOne({
                 _id: doc._userId
             }, function(err, user) {
+
                 if (err) return customError(err, res);
+
                 user["emailConfirmed"] = true;
+
                 user.save(function(err) {
+
                     if (err) return customError(err, res);
 
-                    res.json('Verified');
+                    res.json({
+                        success: true,
+                        message: 'success'
+                    });
 
                 })
             })

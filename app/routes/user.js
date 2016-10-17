@@ -6,7 +6,6 @@ module.exports = function(apiRouter, nev) {
     var customError = require('../helpers/customError');
     var requireRole = require('../helpers/requireRole');
     var pagination = require('../helpers/pagination');
-
     var emailService = require('../helpers/emailService');
 
     apiRouter.route('/users')
@@ -42,14 +41,12 @@ module.exports = function(apiRouter, nev) {
 
                     if (err) return customError(err, res);
 
-                    emailService.sendVerificationEmail(user.email, token, function(error, success) {
+                    emailService.sendVerificationEmail(user.email, token, user.confirmUrl, function(error, success) {
 
                         if (err) return customError(err, res);
 
-                        res.json('An email has been sent to you. Please check it to verify your account.');
+                        res.json('Un email ha sido enviado. Por favor revise su cuenta.');
 
-
-                        console.info("Sent to postmark for delivery")
                     });
                 });
             });
@@ -123,6 +120,7 @@ module.exports = function(apiRouter, nev) {
         if (req.body.lastActivityDate) user.lastActivityDate = req.body.lastActivityDate;
         if (req.body.disabled) user.disabled = req.body.disabled;
         if (req.body.role) user.role = req.body.role;
+        if (req.body.confirmUrl) user.confirmUrl = req.body.confirmUrl;
 
         return user;
     };

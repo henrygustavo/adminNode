@@ -2,12 +2,11 @@ angular.module("applicationAdminModule").controller("userEditController", functi
 
     $scope.model = {};
     $scope.model._id = id;
+    $scope.model.confirmUrl = GlobalInfo.confirmUrl;
 
 	helperService.activateView('user');
 
     $scope.save = function (model) {
-
-        model.confirmUrl = GlobalInfo.confirmUrl;
 
         if (model._id != 0) {
             update(model);
