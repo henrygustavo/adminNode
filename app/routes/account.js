@@ -39,7 +39,6 @@ module.exports = function(apiRouter, nev) {
                         var token = jwt.sign({
                             name: user.name,
                             email: user.email,
-                            emailConfirmed: user.emailConfirmed,
                             role: user.role
                         }, supersecret, {
                             expiresIn: '24h'
@@ -50,6 +49,7 @@ module.exports = function(apiRouter, nev) {
                             success: true,
                             message: "Accesso autorizado",
                             name: user.name,
+                            emailConfirmed: user.emailConfirmed,
                             token: token
                         });
                     }
@@ -64,7 +64,7 @@ module.exports = function(apiRouter, nev) {
         VerificationToken.findOne({
             token: token
         }, function(err, doc) {
-          
+
             if (err) return customError(err, res);
 
             if (doc==null) return res.json({

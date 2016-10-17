@@ -12,7 +12,7 @@ angular.module("applicationAdminModule").controller("accountLoginController", fu
 
             var message = 'Hola ' + res.data.name + ' !';
 
-            if (!res.data.emailConfirmed) {
+            if (res.data.emailConfirmed != 1) {
                 message += 'Solo como recordatorio,por favor activa tu cuenta pronto :)';
             }
 
