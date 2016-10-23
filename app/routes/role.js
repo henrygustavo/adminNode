@@ -28,7 +28,11 @@ module.exports = function(apiRouter) {
 
                 if (err) return customError(err, res);
 
-                res.json('role creado exitosamente');
+                res.json({
+                    success: true,
+                    message: 'role creado exitosamente'
+                });
+
             });
         });
 
@@ -64,7 +68,10 @@ module.exports = function(apiRouter) {
 
                     if (err) return customError(err, res);
 
-                    res.json('role actualizado exitosamente');
+                    res.json({
+                        success: true,
+                        message: 'role actualizado exitosamente'
+                    });
                 });
             });
         });

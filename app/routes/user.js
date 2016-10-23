@@ -45,8 +45,10 @@ module.exports = function(apiRouter, nev) {
 
                         if (err) return customError(err, res);
 
-                        res.json('Un email ha sido enviado. Por favor revise su cuenta.');
-
+                        res.json({
+                            success: true,
+                            message: 'Un email ha sido enviado. Por favor revise su cuenta.'
+                        });
                     });
                 });
             });
@@ -102,7 +104,11 @@ module.exports = function(apiRouter, nev) {
 
                 user.save(function(err) {
                     if (err) return customError(err, res);
-                    res.json('usuario actualizado exitosamente');
+
+                    res.json({
+                        success: true,
+                        message: 'usuario actualizado exitosamente.'
+                    });
                 });
             });
         });

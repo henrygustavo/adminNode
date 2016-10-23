@@ -18,7 +18,7 @@ angular.module("applicationAdminModule").controller("roleEditController", functi
 
         roleRepository.insert(model).then(
             function(response) {
-                helperService.showAlert(response, "success");
+                helperService.showAlertResponse(response);
                 $state.go('roleList');
             },
             function(response) {
@@ -31,7 +31,7 @@ angular.module("applicationAdminModule").controller("roleEditController", functi
 
         roleRepository.update(model).then(
             function(response) {
-                helperService.showAlert(response, "success");
+                helperService.showAlertResponse(response);
                 $state.go('roleList');
             },
             function(response) {

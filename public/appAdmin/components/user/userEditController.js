@@ -19,7 +19,7 @@ angular.module("applicationAdminModule").controller("userEditController", functi
 
         userRepository.insert(model).then(
             function(response) {
-                helperService.showAlert(response, "success");
+                helperService.showAlertResponse(response);
                 $state.go('userList');
             },
             function(response) {
@@ -32,7 +32,7 @@ angular.module("applicationAdminModule").controller("userEditController", functi
 
         userRepository.update(model).then(
             function(response) {
-                helperService.showAlert(response, "success");
+                helperService.showAlertResponse(response);
                 $state.go('userList');
             },
             function(response) {
