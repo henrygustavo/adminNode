@@ -70,7 +70,7 @@ angular.module("applicationAdminModule").factory('accountRepository', function($
         verificationToken: function (token) {
 
             var deferred = $q.defer();
-            $http.get(GlobalInfo.apiUrl + '/account/verificationToken/'+ token)
+            $http.post(GlobalInfo.apiUrl + '/account/verificationToken',{token:token})
                 .success(function (response) {
                     deferred.resolve(response);
                 })

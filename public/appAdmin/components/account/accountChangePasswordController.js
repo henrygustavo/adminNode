@@ -4,7 +4,7 @@ angular.module("applicationAdminModule").controller("accountChangePasswordContro
 
         accountRepository.changePassowrd(model).then(
             function (response) {
-                helperService.showAlert(response, 'success');
+                helperService.showAlertResponse(response);
                 $auth.logout();
                 $state.go('login');
             },

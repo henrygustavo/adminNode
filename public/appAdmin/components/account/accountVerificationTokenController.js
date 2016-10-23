@@ -10,12 +10,9 @@ angular.module("applicationAdminModule").controller("accountVerificationTokenCon
             function(response) {
 
                 $scope.response = response;
-                $scope.mensaje = (response.success) ? "Gracias por su confirmación, por favor inicie sesión" : "Hubo un error vuelva intertalo luego";
-
             },
             function(response) {
                 helperService.handlerError(response);
-                $scope.mensaje =  "Hubo un error vuelva intertalo luego";
             }
         );
     };

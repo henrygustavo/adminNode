@@ -41,10 +41,15 @@ applicationModule.config(function ($urlRouterProvider, $stateProvider, $location
 			data: {	permissions: {only: ['ANONYMOUS']	}}
 	  })
 	.state('resetpw', {
-			url: '/resetpassword',
+			url: '/resetpassword/:token',
 			templateUrl: '/appAdmin/components/account/accountResetPasswordView.html',
 			controller: 'accountResetPasswordController',
-			data: {	permissions: {only: ['ANONYMOUS']	}}
+			data: {	permissions: {only: ['ANONYMOUS']	}},
+			resolve: {
+ 					 token: function ($stateParams) {
+ 						 return $stateParams.token;
+ 						 }
+ 				 }
 	})
 	.state('verificationToken', {
 		 url: '/verificationToken/:token',

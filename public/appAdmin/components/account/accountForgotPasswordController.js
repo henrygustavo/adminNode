@@ -6,7 +6,7 @@ angular.module("applicationAdminModule").controller("accountForgotPasswordContro
 
         accountRepository.forgotPassword(model).then(
             function (response) {
-                helperService.showAlert(response, 'success');
+                helperService.showAlertResponse(response);
                 $auth.logout();
                 $state.go('login');
             },

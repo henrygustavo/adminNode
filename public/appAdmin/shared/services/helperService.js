@@ -19,6 +19,15 @@ angular.module("applicationAdminModule").factory('helperService', function($root
         handlerError: function(err) {
             toastr.error(getErrorMessages(err));
         },
+        showAlertResponse: function(response) {
+
+            if(response.success){
+                toastr.success(response.message);
+            }else{
+
+                toastr.error(response.message);
+            }
+        },
         showAlert: function(message, className) {
 
             switch (className.toLowerCase()) {
