@@ -19,19 +19,20 @@ module.exports = function(express) {
             jwt.verify(token, supersecret, function(err, decoded) {
 
                 if (err) {
-                    return res.json({
+                    return res.status(500).send({
                         success: false,
                         message: "Fallo autenticacion del token"
                     })
                 } else {
                     req.role = jwt.decode(token).role;
+                    req.email = jwt.decode(token).email;
                     next();
                 }
 
             });
 
         } else {
-            return res.status(403).send({
+            return  res.status(500).send({
                 success: false,
                 message: 'No se envio el token'
             });

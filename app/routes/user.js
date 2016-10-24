@@ -60,7 +60,7 @@ module.exports = function(apiRouter, nev) {
             User.findOne({
                 name: req.params.name
             }, function(err, user) {
-                if (err) return res.send(err);
+                if (err) return customError(err, res);
 
                 res.json({
                     exist: user != null
@@ -71,16 +71,15 @@ module.exports = function(apiRouter, nev) {
 
     apiRouter.route('/users/email/:email')
         .get(requireRole("admin"), function(req, res) {
-            console.log(req.params.email);
+
             User.findOne({
                 email: req.params.email
             }, function(err, user) {
-                if (err) return res.send(err);
+                if (err) return customError(err, res);
 
                 res.json({
                     exist: user != null
                 });
-
             });
         });
 
@@ -90,7 +89,7 @@ module.exports = function(apiRouter, nev) {
             User.findOne({
                 _id: req.params.user_id
             }, function(err, user) {
-                if (err) return res.send(err);
+                if (err) return customError(err, res);
 
                 res.json(user);
 
@@ -112,6 +111,50 @@ module.exports = function(apiRouter, nev) {
                 });
             });
         });
+
+    apiRouter.post('/account/changePassword', function(req, res) {
+
+        var email = req.email;
+
+        User.findOne({
+                email: email
+            }).select('password')
+            .exec(function(err, user) {
+
+                if (err) return customError(err, res);
+
+                if (!user) {
+
+                    return res.status(500).send({
+                        success: false,
+                        message: "No existe alguna cuenta asociada a ese email"
+                    });
+                }
+
+                var validaPassword = user.comparePassword(req.body.oldpassword);
+
+                // check if password matches
+
+                if (!validaPassword) {
+                    res.status(500).send({
+                        success: false,
+                        message: 'Contraseña incorrecta.'
+                    });
+                } else {
+
+                    user.password = req.body.newpassword;
+
+                    user.save(function(err) {
+                        if (err) return customError(err, res);
+
+                        res.json({
+                            success: true,
+                            message: 'Contraseña actualizada exitosamente.'
+                        });
+                    });
+                }
+            });
+    });
 
     var mapModel = function(user, req) {
 

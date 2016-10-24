@@ -79,6 +79,10 @@ function getErrorMessages(errorResponse) {
     if (errorResponse.exceptionMessage != undefined)
         errorMessage += errorResponse.exceptionMessage + "<br/>";
 
+    if (errorResponse.data != undefined && errorResponse.data.message != undefined)
+        errorMessage += errorResponse.data.message + "<br/>";
+
+
     for (var key in errorResponse.modelState) {
 
         errorMessage += errorResponse.modelState[key] + "<br/>";

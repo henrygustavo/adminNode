@@ -20,7 +20,7 @@ module.exports = function(apiRouter, nev) {
                 if (err) return customError(err, res);
 
                 if (!user) {
-                    res.json({
+                    res.status(500).send({
                         success: false,
                         message: 'La autenticacion ha fallado.El usuario no existe'
                     });
@@ -29,9 +29,9 @@ module.exports = function(apiRouter, nev) {
                     var validaPassword = user.comparePassword(req.body.password);
                     // check if password matches
                     if (!validaPassword) {
-                        res.json({
+                        res.status(500).send({
                             success: false,
-                            message: 'La autenticacion ha fallado.Contrasena no existe.'
+                            message: 'La autenticacion ha fallado.Contraseña no existe.'
                         });
                     } else {
 
@@ -50,6 +50,7 @@ module.exports = function(apiRouter, nev) {
                             success: true,
                             message: "Accesso autorizado",
                             name: user.name,
+                            email: user.email,
                             emailConfirmed: user.emailConfirmed,
                             token: token
                         });
@@ -68,7 +69,7 @@ module.exports = function(apiRouter, nev) {
 
             if (err) return customError(err, res);
 
-            if (doc == null) return res.json({
+            if (doc == null) return res.status(500).send({
                 success: false,
                 message: 'Error vuelva a intentarlo luego'
             });
@@ -147,7 +148,7 @@ module.exports = function(apiRouter, nev) {
 
             if (err) return customError(err, res);
 
-            if (doc == null) return res.json({
+            if (doc == null) return res.status(500).send({
                 success: false,
                 message: 'error'
             });
@@ -162,6 +163,7 @@ module.exports = function(apiRouter, nev) {
                 if (!user) {
 
                     return res.status(500).send({
+                        success: false,
                         message: "No existe alguna cuenta asociada a ese email"
                     });
 
