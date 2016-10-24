@@ -4,5 +4,7 @@ module.exports = {
   'supersecret' : '123',
   'emailservise':'Gmail',
   'emailaccount':'henrygustavof@gmail.com',
-  'emailpassword':'henry_16'
+  'emailpassword':'henry_16',
+  'limitNumberLoginAttemps':'3'
+
 }

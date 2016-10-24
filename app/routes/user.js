@@ -146,7 +146,7 @@ module.exports = function(apiRouter, nev) {
 
                     user.save(function(err) {
                         if (err) return customError(err, res);
-                        console.log()
+
                         emailService.sendChangePasswordEmail(email, function(error, success) {
 
                             if (err) return customError(err, res);
@@ -168,13 +168,19 @@ module.exports = function(apiRouter, nev) {
         if (req.body.emailConfirmed) user.emailConfirmed = req.body.emailConfirmed;
         if (req.body.password) user.password = req.body.password;
         if (req.body.lockoutEndDateUtc) user.lockoutEndDateUtc = req.body.lockoutEndDateUtc;
-        if (req.body.lockoutEnabled) user.lockoutEnabled = req.body.lockoutEnabled;
+
         if (req.body.accessFailedCount) user.accessFailedCount = req.body.accessFailedCount;
         if (req.body.creationDate) user.creationDate = req.body.creationDate;
         if (req.body.lastActivityDate) user.lastActivityDate = req.body.lastActivityDate;
-        if (req.body.disabled) user.disabled = req.body.disabled;
+
+        user.disabled = req.body.disabled ?1:0;
+        user.lockoutEnabled = req.body.lockoutEnabled ?1:0;
+
         if (req.body.role) user.role = req.body.role;
         if (req.body.confirmUrl) user.confirmUrl = req.body.confirmUrl;
+
+        console.log("disabled"+req.body.disabled);
+          console.log("disabled1"+user.disabled);
 
         return user;
     };

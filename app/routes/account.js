@@ -14,7 +14,7 @@ module.exports = function(apiRouter, nev) {
         // find the user
         User.findOne({
                 email: req.body.email
-            }).select('emailConfirmed email password role name')
+            }).select('emailConfirmed email password role name disabled accessFailedCount lockoutEnabled lastActivityDate lockoutEndDateUtc')
             .exec(function(err, user) {
 
                 if (err) return customError(err, res);
@@ -24,35 +24,82 @@ module.exports = function(apiRouter, nev) {
                         success: false,
                         message: 'La autenticacion ha fallado.El usuario no existe'
                     });
-                } else if (user) {
+                } else {
+
+                    if (user.disabled == 1) {
+
+                      return  res.status(500).send({
+                            success: false,
+                            message: 'La cuenta se encuentra deshabilitada, comunicarse con el administrador'
+                        });
+                    }
+
+                    if (user.lockoutEnabled == 1) {
+                      return  res.status(500).send({
+                            success: false,
+                            message: 'La cuenta se encuentra bloqueada, comunicarse con el administrador'
+                        });
+                    }
 
                     var validaPassword = user.comparePassword(req.body.password);
                     // check if password matches
                     if (!validaPassword) {
-                        res.status(500).send({
-                            success: false,
-                            message: 'La autenticacion ha fallado.Contraseña no existe.'
-                        });
+
+                        if (user.accessFailedCount > config.limitNumberLoginAttemps && user.lockoutEnabled == 0) {
+                            user.lockoutEnabled = 1;
+                            user.lockoutEndDateUtc = Date.now();
+
+                            user.save(function(err) {
+                              if (err) return customError(err, res);
+
+                              return  res.status(500).send({
+                                    success: false,
+                                    message: 'La cuenta ha sido bloqueado debido a varios intentos fallidos.'
+                                });
+                            });
+
+                        } else {
+
+                            user.accessFailedCount = user.accessFailedCount + 1;
+
+                            user.save(function(err) {
+                              if (err) return customError(err, res);
+
+                              return  res.status(500).send({
+                                    success: false,
+                                    message: 'La autenticacion ha fallado.Contraseña no es la correcta.'
+                                });
+
+                            });
+                        }
+
                     } else {
 
                         // if user is found and password is right
-                        // create a token
-                        var token = jwt.sign({
-                            name: user.name,
-                            email: user.email,
-                            role: user.role
-                        }, supersecret, {
-                            expiresIn: '24h'
-                        });
+                        user.accessFailedCount = 0;
+                        user.lastActivityDate = Date.now();
 
-                        // return the information including token as JSON
-                        res.json({
-                            success: true,
-                            message: "Accesso autorizado",
-                            name: user.name,
-                            email: user.email,
-                            emailConfirmed: user.emailConfirmed,
-                            token: token
+                        user.save(function(err) {
+                            if (err) return customError(err, res);
+
+                            // create a token
+                            var token = jwt.sign({
+                                name: user.name,
+                                email: user.email,
+                                role: user.role
+                            }, supersecret, {
+                                expiresIn: '24h'
+                            });
+
+                            // return the information including token as JSON
+                            res.json({
+                                success: true,
+                                message: "Accesso autorizado",
+                                name: user.name,
+                                email: user.email,
+                                emailConfirmed: user.emailConfirmed,
+                                token: token
+                            });
                         });
                     }
                 }
