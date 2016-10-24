@@ -146,10 +146,15 @@ module.exports = function(apiRouter, nev) {
 
                     user.save(function(err) {
                         if (err) return customError(err, res);
+                        console.log()
+                        emailService.sendChangePasswordEmail(email, function(error, success) {
 
-                        res.json({
-                            success: true,
-                            message: 'Contraseña actualizada exitosamente.'
+                            if (err) return customError(err, res);
+
+                            res.json({
+                                success: true,
+                                message: 'Contraseña actualizada exitosamente.'
+                            });
                         });
                     });
                 }
