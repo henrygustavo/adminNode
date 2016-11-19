@@ -58,7 +58,7 @@ module.exports = function(apiRouter, nev) {
         .get(requireRole("admin"), function(req, res) {
 
             User.findOne({
-                name: req.params.name
+                name: new RegExp(req.params.name, "i")
             }, function(err, user) {
                 if (err) return customError(err, res);
 
@@ -73,7 +73,7 @@ module.exports = function(apiRouter, nev) {
         .get(requireRole("admin"), function(req, res) {
 
             User.findOne({
-                email: req.params.email
+                email: new RegExp(req.params.email, "i")
             }, function(err, user) {
                 if (err) return customError(err, res);
 
